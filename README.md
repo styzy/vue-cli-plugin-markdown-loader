@@ -35,7 +35,8 @@ export default {
 
 ```javascript
 // Vue的入口main.js
+import 'github-markdown-css'
 import 'vue-cli-plugin-markdown-loader/atom-one-dark.css'
 ```
 
-当然，如果你只喜欢 `github-markdown-css` 的代码样式风格，你也可以不引入。
+当然，如果你只喜欢 `github-markdown-css` 的代码样式风格，你也可以不引入 `atom-one-dark.css`。
