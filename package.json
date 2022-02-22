@@ -1,0 +1,30 @@
+{
+	"name": "vue-cli-plugin-markdown-loader",
+	"version": "0.1.0",
+	"description": "A Vue Cli 4 plugin to import markdown with marked and highlight.js",
+	"keywords": [
+		"markdown",
+		"highlight.js",
+		"vue-markdown",
+		"vue",
+		"cli",
+		"vue-cli",
+		"vue-cli-plugin",
+		"webpack",
+		"marked"
+	],
+	"repository": "git@github.com:styzy/vue-cli-plugin-markdown.git",
+	"author": {
+		"name": "STYZY",
+		"email": "styzyreal@126.com",
+		"url": "https://our.styzy.cn"
+	},
+	"main": "index.js",
+	"license": "MIT",
+	"private": false,
+	"dependencies": {
+		"html-loader": "^0.5.5",
+		"markdown-loader": "^5.0.0",
+		"highlight.js": "^11.4.0"
+	}
+}
