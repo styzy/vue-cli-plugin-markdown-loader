@@ -30,18 +30,28 @@ export default {
 
 ## 代码块样式
 
+
+### 必选样式 github-markdown-css
+
 ```javascript
 // Vue的入口main.js
-
-// 引入github的markdown风格样式
 import 'github-markdown-css'
-// 引入highlight.js内置的代码风格样式，风格可以自己选择
+```
+
+因为markdown的基本样式都依靠 `github-markdown-css` 渲染，所以这是必须引入的样式
+
+### 可选样式 highlight.js代码风格
+
+```javascript
+// Vue的入口main.js
 import 'highlight.js/styles/atom-one-dark.css'
+// 注意：如果使用了highlight.js的atom-one-dark代码风格，请引入下方的atom-one-dark.fixed.css,修复因为与github-markdown-css样式冲突带来的问题。
+import 'vue-cli-plugin-markdown-loader/atom-one-dark.fixed.css'
 ```
 
 ## 示例
 
-[VueTabRouter](http://vue-tab-router.styzy.cn) 官方文档基于 `vue-cli-plugin-markdown-loader` 实现。
+[VueTabRouter](http://vue-tab-router.styzy.cn) 官方文档基于 `vue-cli-plugin-markdown-loader` 实现，可以参考该文档 `markdown` 样式。
 
 ## 引用
 
