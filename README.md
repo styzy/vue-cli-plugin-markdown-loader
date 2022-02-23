@@ -46,7 +46,11 @@ import 'highlight.js/styles/atom-one-dark.css'
 ## 引用
 
 [markdown-it](https://github.com/markdown-it/markdown-it)
+
 [markdown-it-container](https://github.com/markdown-it/markdown-it-container)
+
 [markdown-it-emoji](https://github.com/markdown-it/markdown-it-emoji)
+
 [github-markdown-css](https://github.com/sindresorhus/github-markdown-css)
+
 [highlight.js](https://github.com/highlightjs/highlight.js)

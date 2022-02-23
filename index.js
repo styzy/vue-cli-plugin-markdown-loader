@@ -1,5 +1,3 @@
-const loader = require('./src/loader')
-
 module.exports = (api) => {
 	api.chainWebpack((webpackConfig) => {
 		webpackConfig.module.rules.delete('md')
@@ -11,7 +9,7 @@ module.exports = (api) => {
 			.loader('vue-loader')
 			.end()
 			.use('markdown-loader')
-			.loader(loader)
+			.loader(require.resolve('./src/loader'))
 			.end()
 	})
 }
