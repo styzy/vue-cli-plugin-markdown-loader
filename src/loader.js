@@ -33,7 +33,7 @@ const md = markdown({
 	.use(emoji)
 	.use(containers)
 
-const cache = LRU({ max: 1000 })
+const cache = new LRU({ max: 1000 })
 
 module.exports = function (src) {
 	const isProd = process.env.NODE_ENV === 'production'
