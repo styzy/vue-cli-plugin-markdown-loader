@@ -18,7 +18,7 @@ const md = markdown({
 		if (lang && hljs.getLanguage(lang)) {
 			try {
 				return (
-					'<pre class="hljs"><code>' +
+					'<pre class="hljs" v-pre><code>' +
 					hljs.highlight(str, {
 						language: lang,
 						ignoreIllegals: true
@@ -27,7 +27,7 @@ const md = markdown({
 				)
 			} catch (__) {}
 		}
-		return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>'
+		return '<pre class="hljs" v-pre><code>' + md.utils.escapeHtml(str) + '</code></pre>'
 	}
 })
 	.use(emoji)
