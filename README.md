@@ -10,26 +10,27 @@ vue add markdown-loader
 ```
 
 ## 基本使用
-```javascript
-<template>
-  Markdown
-</template>
 
-<script>
-import Markdown from "@/assets/markdown.md";
+```javascript
+< template >
+    Markdown <
+    /template>
+
+    <
+    script >
+    import Markdown from "@/assets/markdown.md";
 
 export default {
-  components: {
-    Markdown
-  }
-};
-</script>
+    components: {
+        Markdown
+    }
+}; <
+/script>
 ```
 
 <!-- >请注意：容器上的 `class="markdown-body"` 是必须的，因为这是 `github-markdown-css` 的样式容器类名。 -->
 
 ## 代码块样式
-
 
 ### 必选样式 github-markdown-css
 
@@ -47,6 +48,27 @@ import 'github-markdown-css'
 import 'highlight.js/styles/atom-one-dark.css'
 // 注意：如果使用了highlight.js的atom-one-dark代码风格，请引入下方的atom-one-dark.fixed.css,修复因为与github-markdown-css样式冲突带来的问题。
 import 'vue-cli-plugin-markdown-loader/atom-one-dark.fixed.css'
+```
+
+## 配置
+
+```javascript
+// vue.config.js
+
+pluginOptions: {
+    'markdown-loader': {
+        container: {
+            demo: {
+                // demo容器的名字，用于匹配关键字
+                blockName: 'demo',
+                // 渲染的vue组件名
+                componentName: 'demo-box'
+            }
+        },
+        // 是否使用缓存，默认为true
+        useCache: false
+    }
+}
 ```
 
 ## 示例
