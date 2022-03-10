@@ -68,7 +68,7 @@ function createDemoContainer({ spoiler, tag, renderLanguages }) {
 						}
 						contentStr += content
 					}
-					return `<${tag} :spoiler="${spoiler}"><template #demo>${contentStr}</template><template #code>`
+					return `<${tag} spoiler="${spoiler}"><template #demo>${contentStr}</template><template #code>`
 				} else {
 					return `</template></${tag}>\n`
 				}
@@ -88,7 +88,7 @@ function createCustomContainer({ spoiler, tag }) {
 					.trim()
 					.match(new RegExp(`/^${spoiler}\s+(.*)$/`))
 				if (token.nesting === 1) {
-					return `<${tag} class="custom-block ${spoiler}" :spoiler="${spoiler}">\n`
+					return `<${tag} class="custom-block ${spoiler}" spoiler="${spoiler}">\n`
 				} else {
 					return `</${tag}>\n`
 				}

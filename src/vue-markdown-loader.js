@@ -2,6 +2,8 @@ const hash = require('hash-sum')
 const LRU = require('lru-cache')
 const loaderUtils = require('loader-utils')
 const cheerio = require('cheerio')
+const jsdom = require('jsdom')
+const { JSDOM } = jsdom
 
 const cache = new LRU({ max: 1000 })
 
@@ -31,6 +33,7 @@ module.exports = function (source) {
 
 function createVueSFC(html, { wrapperClassName, wrapperTag }) {
 	const $ = cheerio.load(html, {
+			withDomLvl1: false,
 			decodeEntities: false,
 			lowerCaseTags: false,
 			lowerCaseAttributeNames: false
@@ -38,14 +41,20 @@ function createVueSFC(html, { wrapperClassName, wrapperTag }) {
 		style = $.html('style'),
 		script = $.html($('script').first())
 
-	$('style').remove()
-	$('script').remove()
+	const scriptReg = createTagRegExp('script'),
+		styleReg = createTagRegExp('style'),
+		templateStr = html.replace(scriptReg, '').replace(styleReg, '')
 
-	const template = `<template><${wrapperTag} class="${wrapperClassName}">${$(
-		'body'
-	).html()}</${wrapperTag}></template>`
+	const template = `<template><${wrapperTag} class="${wrapperClassName}">${templateStr}</${wrapperTag}></template>`
 
 	const sfc = `${template}\n${script}\n${style}`
 
 	return sfc
+}
+
+function createTagRegExp(tag) {
+	return new RegExp(
+		`<${tag}\\b[^<]*(?:(?!<\\/${tag}>)<[^<]*)*<\\/${tag}>`,
+		'g'
+	)
 }
