@@ -1,5 +1,3 @@
-const fs = require('fs')
-const path = require('path')
 const hash = require('hash-sum')
 const LRU = require('lru-cache')
 const hljs = require('highlight.js')
@@ -10,7 +8,10 @@ const markdown = require('markdown-it')
 const emoji = require('markdown-it-emoji')
 const containers = require('./containers')
 
-const createMd = ({ emoji: emojiOptions, container: containerOptions } = {}) => {
+const createMd = ({
+	emoji: emojiOptions,
+	container: containerOptions
+} = {}) => {
 	const md = markdown({
 		// Enable HTML tags in source
 		html: true,
@@ -29,7 +30,11 @@ const createMd = ({ emoji: emojiOptions, container: containerOptions } = {}) => 
 					)
 				} catch (__) {}
 			}
-			return '<pre class="hljs" v-pre><code>' + md.utils.escapeHtml(str) + '</code></pre>'
+			return (
+				'<pre class="hljs" v-pre><code>' +
+				md.utils.escapeHtml(str) +
+				'</code></pre>'
+			)
 		}
 	})
 		.use(emoji, emojiOptions)
@@ -46,17 +51,16 @@ module.exports = function (source) {
 		key = hash(file + source),
 		cached = cache.get(key),
 		options = loaderUtils.getOptions(this),
-		useCache = options.useCache,
+		{ useCache = true } = options || {},
 		md = createMd(options)
 
 	// 热编译模式下构建时使用缓存以提高性能
-	if (useCache !== false && cached && (isProd || /\?vue/.test(this.resourceQuery))) {
+	if (useCache && cached && (isProd || /\?vue/.test(this.resourceQuery))) {
 		return cached
 	}
 
 	const html = md.render(source)
 
-	const res = `<template>\n` + `<div class="markdown-body">${html}</div>\n` + `</template>\n`
-	cache.set(key, res)
-	return res
+	cache.set(key, html)
+	return html
 }

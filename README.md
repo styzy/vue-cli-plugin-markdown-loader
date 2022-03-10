@@ -55,20 +55,57 @@ import 'vue-cli-plugin-markdown-loader/atom-one-dark.fixed.css'
 ```javascript
 // vue.config.js
 
-pluginOptions: {
-    'markdown-loader': {
-        container: {
-            demo: {
-                // demo容器的名字，用于匹配关键字
-                blockName: 'demo',
-                // 渲染的vue组件名
-                componentName: 'demo-box'
+module.exports = {
+    pluginOptions: {
+        'markdown-loader': {
+            // 渲染的组件的根节点标签
+            wrapperTag: 'div',
+            // 渲染的组件的根节点class
+            wrapperClassName: 'markdown-body',
+            // 是否使用缓存，默认为true
+            useCache: false,
+            // 块设置
+            container: {
+                // demo块
+                demo: {
+                    // 块名字
+                    spoiler: 'demo',
+                    // 渲染的标签名
+                    tag: 'demo-box'
+                },
+                // 自定义的块
+                customBlocks: [
+					{
+                        spoiler: 'tip',
+                        tag: 'div'
+                    },
+                    {
+                        spoiler: 'success',
+                        tag: 'div'
+                    },
+                    {
+                        spoiler: 'warning',
+                        tag: 'div'
+                    },
+                    {
+                        spoiler: 'error',
+                        tag: 'div'
+                    }
+                ]
             }
-        },
-        // 是否使用缓存，默认为true
-        useCache: false
+        }
     }
 }
+```
+
+## 注意
+
+如果你在 `md` 文件中使用了`<script>`标签，并且开启了`Eslint`，需要在项目根目录配置`.eslintignore`文件来忽略`Eslint`对`md`文件的检查。
+
+下面是`.eslintignore`文件的配置：
+
+```
+**/*.md
 ```
 
 ## 示例

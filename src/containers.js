@@ -1,54 +1,96 @@
 const container = require('markdown-it-container')
 const pug = require('pug')
 
-module.exports = (md, { demo: { blockName = 'demo', componentName = 'demo-box' } = {} } = {}) => {
-	md.use(...createContainer('tip', 'Tip'))
-		.use(...createContainer('success', 'Success'))
-		.use(...createContainer('warning', 'Warning'))
-		.use(...createContainer('danger', 'Danger'))
-		.use(...createDemoContainer(blockName, componentName))
+module.exports = (
+	md,
+	{
+		customBlocks = [
+			{
+				spoiler: 'tip',
+				tag: 'div'
+			},
+			{
+				spoiler: 'success',
+				tag: 'div'
+			},
+			{
+				spoiler: 'warning',
+				tag: 'div'
+			},
+			{
+				spoiler: 'error',
+				tag: 'div'
+			}
+		],
+		demo: {
+			spoiler = 'demo',
+			tag = 'demo-box',
+			renderLanguages = ['html', 'pug', 'jade']
+		} = {}
+	} = {}
+) => {
+	md.use(...createDemoContainer({ spoiler, tag, renderLanguages }))
 		// explicitly escape Vue syntax
 		.use(container, 'v-pre', {
-			render: (tokens, idx) => (tokens[idx].nesting === 1 ? `<div v-pre>\n` : `</div>\n`)
+			render: (tokens, idx) =>
+				tokens[idx].nesting === 1 ? `<div v-pre>\n` : `</div>\n`
 		})
-}
 
-function createDemoContainer(blockName, componentName) {
+	for (let index = 0; index < customBlocks.length; index++) {
+		const customBlock = customBlocks[index]
+		md.use(...createCustomContainer(customBlock))
+	}
+}
+function createDemoContainer({ spoiler, tag, renderLanguages }) {
 	return [
 		container,
-		blockName,
+		spoiler,
 		{
 			render(tokens, idx) {
 				const token = tokens[idx]
 				if (token.nesting === 1) {
-					let info = tokens[idx + 1].info
-					content = tokens[idx + 1].content
-					if (info === 'pug' || info === 'jade') {
-						content = pug.render(content)
+					let contentStr = ''
+
+					for (let index = idx + 1; index < 999999; index++) {
+						const _token = tokens[index]
+						if (_token.nesting === -1) {
+							break
+						}
+
+						let { content, info } = tokens[index]
+
+						if (!renderLanguages.includes(info)) {
+							continue
+						}
+
+						if (info === 'pug' || info === 'jade') {
+							content = pug.render(content)
+						}
+						contentStr += content
 					}
-					return `<${componentName}><template #default>${content}</template><template #code>`
+					return `<${tag} :spoiler="${spoiler}"><template #demo>${contentStr}</template><template #code>`
 				} else {
-					return `</template></${componentName}}>\n`
+					return `</template></${tag}>\n`
 				}
 			}
 		}
 	]
 }
 
-function createContainer(className, defaultTitle) {
+function createCustomContainer({ spoiler, tag }) {
 	return [
 		container,
-		className,
+		spoiler,
 		{
 			render(tokens, idx) {
 				const token = tokens[idx]
-				const customTitle = token.info.trim().match(new RegExp(`/^${className}\s+(.*)$/`))
+				const customTitle = token.info
+					.trim()
+					.match(new RegExp(`/^${spoiler}\s+(.*)$/`))
 				if (token.nesting === 1) {
-					return `<div class="${className} custom-block"><p class="custom-block-title">${
-						customTitle || defaultTitle
-					}</p>\n`
+					return `<${tag} class="custom-block ${spoiler}" :spoiler="${spoiler}">\n`
 				} else {
-					return `</div>\n`
+					return `</${tag}>\n`
 				}
 			}
 		}
