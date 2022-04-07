@@ -1,32 +1,30 @@
-const hash = require('hash-sum')
-const LRU = require('lru-cache')
+// const hash = require('hash-sum')
+// const LRU = require('lru-cache')
 const loaderUtils = require('loader-utils')
 const cheerio = require('cheerio')
-const jsdom = require('jsdom')
-const { JSDOM } = jsdom
 
-const cache = new LRU({ max: 1000 })
+// const cache = new LRU({ max: 1000 })
 
 module.exports = function (source) {
-	const isProd = process.env.NODE_ENV === 'production',
-		file = this.resourcePath,
-		key = hash(file + source),
-		cached = cache.get(key),
-		options = loaderUtils.getOptions(this),
+	// const isProd = process.env.NODE_ENV === 'production',
+	// file = this.resourcePath,
+	// key = hash(file + source),
+	// cached = cache.get(key),
+	const options = loaderUtils.getOptions(this),
 		{
-			useCache = true,
+			// useCache = true,
 			wrapperClassName = 'markdown-body',
 			wrapperTag = 'div'
 		} = options || {}
 
 	// 热编译模式下构建时使用缓存以提高性能
-	if (useCache && cached && (isProd || /\?vue/.test(this.resourceQuery))) {
-		return cached
-	}
+	// if (useCache && cached && (isProd || /\?vue/.test(this.resourceQuery))) {
+	// 	return cached
+	// }
 
 	const vueSFC = createVueSFC(source, { wrapperClassName, wrapperTag })
 
-	cache.set(key, vueSFC)
+	// cache.set(key, vueSFC)
 
 	return vueSFC
 }

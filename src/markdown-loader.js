@@ -1,5 +1,5 @@
-const hash = require('hash-sum')
-const LRU = require('lru-cache')
+// const hash = require('hash-sum')
+// const LRU = require('lru-cache')
 const hljs = require('highlight.js')
 const loaderUtils = require('loader-utils')
 
@@ -43,24 +43,24 @@ const createMd = ({
 	return md
 }
 
-const cache = new LRU({ max: 1000 })
+// const cache = new LRU({ max: 1000 })
 
 module.exports = function (source) {
-	const isProd = process.env.NODE_ENV === 'production',
-		file = this.resourcePath,
-		key = hash(file + source),
-		cached = cache.get(key),
-		options = loaderUtils.getOptions(this),
-		{ useCache = true } = options || {},
+	// const isProd = process.env.NODE_ENV === 'production',
+	// file = this.resourcePath,
+	// key = hash(file + source),
+	// cached = cache.get(key),
+	const options = loaderUtils.getOptions(this),
+		// { useCache = true } = options || {},
 		md = createMd(options)
 
 	// 热编译模式下构建时使用缓存以提高性能
-	if (useCache && cached && (isProd || /\?vue/.test(this.resourceQuery))) {
-		return cached
-	}
+	// if (useCache && cached && (isProd || /\?vue/.test(this.resourceQuery))) {
+	// 	return cached
+	// }
 
 	const html = md.render(source)
 
-	cache.set(key, html)
+	// cache.set(key, html)
 	return html
 }
