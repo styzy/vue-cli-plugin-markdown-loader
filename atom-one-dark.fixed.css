@@ -1,3 +1,5 @@
-.hljs {
-    background-color: #282c34 !important;
+.markdown-body .highlight pre,
+.markdown-body pre {
+    color: #abb2bf;
+    background-color: #282c34;
 }
