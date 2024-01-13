@@ -57,7 +57,9 @@ function createDemoContainer({ spoiler, tag, renderLanguages }) {
 							break
 						}
 
-						let { content, info } = tokens[index]
+						let { content, info = '' } = tokens[index]
+
+						info = info.toLowerCase()
 
 						if (!renderLanguages.includes(info)) {
 							continue
